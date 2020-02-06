@@ -1,0 +1,139 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import sklearn as skl
+import seaborn as sns
+from sklearn.impute import KNNImputer
+import random as rnd
+
+
+train_df = pd.read_csv('~/MSDA/CAP5610/homework/titanic/train.csv')
+test_df = pd.read_csv('~/MSDA/CAP5610/homework/titanic/test.csv')
+
+combined = [train_df, test_df]
+combinedpd = pd.concat(combined)
+
+pd.set_option('display.max_columns',12)
+pd.set_option('display.max_colwidth',30)
+pd.set_option('display.width',2000)
+
+
+pclass1survived = train_df.loc[train_df.Pclass == 1]['Survived'].mean()
+pclass2survived = train_df.loc[train_df.Pclass == 2]['Survived'].mean()
+pclass3survived = train_df.loc[train_df.Pclass == 3]['Survived'].mean()
+
+print('Ratio of Pclass 1 Survided: ', pclass1survived)
+print('Ratio of Pclass 2 Survided: ', pclass2survived)
+print('Ratio of Pclass 3 Survided: ', pclass3survived)
+print('\n')
+
+''''''
+''' QUESTION 10 '''
+''''''
+
+maleSurvived = train_df.loc[train_df.Sex == 'male']['Survived'].mean()
+femaleSurvived = train_df.loc[train_df.Sex == 'female']['Survived'].mean()
+
+print('Ratio of Male survived:', maleSurvived)
+print('Ratio of Female survived:', femaleSurvived)
+print('\n')
+
+''''''
+''' QUESTION 11 '''
+''''''
+
+YesSurvive = train_df[train_df.Survived == 1]
+NoSurvive = train_df[train_df.Survived == 0]
+
+fig, (ax1, ax2) = plt.subplots(1,2)
+
+ax1.hist(YesSurvive.Age, bins = 25)
+ax2.hist(NoSurvive.Age, bins = 25)
+
+
+ax1.set_xlabel('Age')
+ax1.set_ylabel('Count')
+ax2.set_xlabel('Age')
+ax2.set_ylabel('Count')
+ax1.set_title('Survived = 1')
+ax2.set_title('Survived = 0')
+
+plt.show()
+
+''''''
+''' QUESTION 12 '''
+''''''
+
+grid = sns.FacetGrid(train_df, col='Survived', row='Pclass', size=2.2, aspect=1.6)
+grid.map(plt.hist, 'Age', alpha=.5, bins=20)
+grid.add_legend();
+plt.show()
+
+''''''
+''' QUESTION 13 '''
+''''''
+
+grid = sns.FacetGrid(train_df, row='Embarked', size=2.2, aspect=1.6)
+grid.map(sns.pointplot, 'Pclass', 'Survived', 'Sex', palette='deep',ci=None)
+grid.add_legend()
+plt.show()
+
+
+''''''
+''' QUESTION 14 '''
+''''''
+
+print(train_df.describe(include=['O']))
+#
+# ''''''
+# '''  15 '''
+# ''''''
+#
+print(combinedpd.describe(include=['O']))
+
+''''''
+''' QUESTION 16 '''
+''''''
+
+combinedpd['Gender'] = combinedpd['Sex']
+combinedpd.replace({'Gender' : {'male' : 0, 'female' : 1}}, inplace = True)
+combinedpd.drop(columns = 'Sex', inplace = True)
+# print(combined_df)
+
+''''''
+''' QUESTION 17 '''
+''''''
+
+ageTrainMean = train_df['Age'].mean()
+ageTrainStdev = train_df['Age'].std()
+ageTestMean = test_df['Age'].mean()
+ageTestStdev = test_df['Age'].std()
+train_df['Age'] = train_df['Age'].fillna(rnd.uniform(ageTrainMean - ageTrainStdev, ageTrainMean + ageTrainStdev))
+test_df['Age'] = test_df['Age'].fillna(rnd.uniform(ageTestMean - ageTestStdev, ageTestMean + ageTestStdev))
+# print(train_df)
+# print(test_df)
+
+''''''
+''' QUESTION 18 '''
+''''''
+
+combinedpd.fillna(combinedpd['Embarked'].value_counts().index[0], inplace = True)
+# print(combinedpd['Embarked'])
+# print(combinedpd['Embarked'].isnull().sum())
+
+
+''''''
+''' QUESTION 19 '''
+''''''
+test_df['Fare'].fillna(test_df['Fare'].dropna().median(), inplace=True)
+print(combinedpd['Fare'].isnull().sum())
+
+
+
+''''''
+''' QUESTION 20 '''
+''''''
+
+combinedpd['FareBand'] = pd.cut(x = combinedpd['Fare'], bins = [-0.001, 7.91, 14.454, 31.0, 512.329])
+combinedpd['OrdinalFare'] = pd.cut(x = combinedpd['Fare'], bins = [-0.001, 7.91, 14.454, 31.0, 512.329], labels = ['0', '1', '2', '3'])
+# print(train_df)
