@@ -195,7 +195,7 @@ trainDf4 = pd.DataFrame(data = train4)
 
 train_c45_2 = {'home': ['Home', 'Away', 'Home', 'Home', 'Away', 'Home', 'Home', 'Away', 'Away', 'Home', 'Away', 'Away', 'Away', 'Home', 'Home', 'Home', 'Home', 'Away', 'Home', 'Home', 'Home', 'Home', 'Home', 'Away'],\
         'top': ['Out', 'Out', 'In', 'Out', 'In', 'Out', 'In', 'Out', 'Out', 'Out', 'Out', 'In', 'Out', 'Out', 'Out', 'Out', 'Out', 'Out', 'In', 'Out', 'Out', 'Out', 'In', 'In'], \
-        'media':[1, 4, 1, 1, 4, 1, 1, 4, 4, 1, 1, 3, 4, 1, 1, 1, 2, 4, 1, 1, 5, 1, 1, 4], \
+        'media':['nbc', 'abc', 'nbc', 'nbc', 'abc', 'nbc', 'nbc', 'abc', 'abc', 'nbc', 'nbc', 'fox', 'abc', 'nbc', 'nbc', 'nbc', 'espn', 'abc', 'nbc', 'nbc', 'cbs', 'nbc', 'nbc', 'abc'], \
         'Decision':['Win', 'Win', 'Win', 'Win', 'Lose', 'Win', 'Win', 'Win', 'Win', 'Win', 'Win', 'Lose', 'Lose', 'Win', 'Lose', 'Lose', 'Win', 'Lose', 'Lose', 'Win', 'Lose', 'Win', 'Lose', 'Lose', ]}
 dftrain_c45_2 = pd.DataFrame(data = train_c45_2)
 
