@@ -1,0 +1,213 @@
+from sklearn.datasets import load_iris
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
+from sklearn import tree
+from sklearn.externals.six import StringIO
+from IPython.display import Image
+from pydotplus import graph_from_dot_data
+import pandas as pd
+import numpy as np
+import os
+import graphviz
+from sklearn.metrics import precision_score,f1_score, recall_score, accuracy_score
+from chefboost import Chefboost as chef
+
+#Task 4 PART 1
+#Manually typing up data and encoding variables
+#home represents if a game was home or away. 1 indicates home
+#top indicates if oppenent in AP top 25 at Preseason. 1 indicates In
+#media corresponds to media coverage. 1-NBC, 2-ESPN, 3-Fox, 4-ABC
+#win - 1, lose - 0
+train1 = {'home': [1, 1, 0, 0, 1, 0], 'top': [0, 1, 0, 0, 0, 0], \
+    'media':[1, 1, 2, 3, 1, 4], 'Decision':[1, 0, 1, 1, 1, 1]}
+test1 = {'home': [1, 1, 1, 0, 1, 0], 'top': [1, 0, 0, 1, 0, 1], \
+    'media':[1, 1, 1, 4, 1, 4]}
+trainDf1 = pd.DataFrame(data = train1)
+testDf1 = pd.DataFrame(data = test1)
+
+
+
+
+'''ENTROPY PLOT Q4 PART 1'''
+dt1 = tree.DecisionTreeClassifier(criterion="entropy")
+clf1 = dt1.fit(trainDf1.iloc[:, :3], trainDf1['Decision'])
+tree.plot_tree(clf1)
+dot_data = tree.export_graphviz(dt1, out_file=None, feature_names=list(trainDf1.columns.values)[:3],
+                                filled=True, rounded=True, special_characters=True)
+graph = graphviz.Source(dot_data)
+graph.render("Entropy_DecisionTree_Q4_Part1")
+
+prediction = clf1.predict(testDf1)
+print("Prediction for Entropy Q4 Part 1:", prediction)
+
+
+
+
+
+
+'''GINI PLOT Q4 PART 1'''
+dt2 = tree.DecisionTreeClassifier()
+clf2 = dt2.fit(trainDf1.iloc[:, :3], trainDf1['Decision'])
+tree.plot_tree(clf2)
+dot_data = tree.export_graphviz(dt2, out_file=None, feature_names=list(trainDf1.columns.values)[:3],
+                                filled=True, rounded=True, special_characters=True)
+graph = graphviz.Source(dot_data)
+graph.render("Gini_DecisionTree_Q4_Part1")
+
+
+prediction = clf2.predict(testDf1)
+print("Prediction for Gini Q4 Part 1:", prediction)
+
+
+
+
+
+
+
+train_c45 = {'home/away': ['home', 'home', 'away', 'away', 'home', 'away'], \
+            'top': ['out', 'in', 'out', 'out', 'out', 'out'], \
+            'media': [1, 1, 2, 3, 1, 4], \
+            'Decision': ['win', 'lose', 'win', 'win', 'win', 'win']}
+
+train_c45 = pd.DataFrame(data = train_c45)
+
+# print("Q4 PART 1 C4.5")
+# config = {'algorithm': 'C4.5'}
+# model = chef.fit(train_c45, config)
+# print("\n\n")
+
+
+
+
+
+
+
+#Task 4 PART 2
+#Manually typing up data and encoding variables
+#weather data represents 1-Sunny, 2-Overcast, 3-rainy
+#temp data represents 1-hot, 2-mild, 3-cool
+#humidity data represents 1-High, 0-Normal
+#windy data represents 1-True, 0-False
+#result data represents if team should play. 1-yes, 0-no
+train2 = {'weather': [1, 1, 2, 3, 3, 3, 2, 1, 1, 3, 1, 2, 2, 3], \
+    'temp': [1, 1, 1, 2, 3, 3, 3, 2, 3, 2, 2, 2, 1, 2], \
+    'humidity':[1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1], \
+    'windy':[0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1], \
+    'Decision':[0,0,1,1,1,0,1,0,1,1,1,1,1,0]}
+test2 = {'weather': [3], 'temp': [1], 'humidity':[1], 'windy':[0]}
+trainDf2 = pd.DataFrame(data = train2)
+testDf2 = pd.DataFrame(data = test2)
+
+
+
+
+
+'''ENTROPY PLOT Q4 PART 2'''
+dt3 = tree.DecisionTreeClassifier(criterion="entropy")
+clf3 = dt3.fit(trainDf2.iloc[:, :4], trainDf2['Decision'])
+tree.plot_tree(dt3.fit(trainDf2.iloc[:, :4], trainDf2['Decision']))
+dot_data = tree.export_graphviz(dt3, out_file=None, feature_names=list(trainDf2.columns.values)[:4],
+                                filled=True, rounded=True, special_characters=True)
+graph = graphviz.Source(dot_data)
+graph.render("Entropy_DecisionTree_Q4_Part2")
+
+prediction = clf3.predict(testDf2)
+print("Prediction for Entropy Q4 Part 2:", prediction)
+
+
+
+
+
+
+'''GINI PLOT Q4 PART 2'''
+dt4 = tree.DecisionTreeClassifier()
+clf4 = dt4.fit(trainDf2.iloc[:, :4], trainDf2['Decision'])
+tree.plot_tree(dt4.fit(trainDf2.iloc[:, :4], trainDf2['Decision']))
+dot_data = tree.export_graphviz(dt4, out_file=None, feature_names=list(trainDf2.columns.values)[:4],
+                                filled=True, rounded=True, special_characters=True)
+graph = graphviz.Source(dot_data)
+graph.render("Gini_DecisionTree_Q4_Part2")
+
+prediction = clf4.predict(testDf2)
+print("Prediction for Gini Q4 Part 2:", prediction)
+
+
+trainx2_c45 = {'weather': ['Sunny', 'Sunny', 'Overcast', 'Rainy', 'Rainy', 'Rainy', 'Overcast', 'Sunny', 'Sunny', 'Rainy', 'Sunny', 'Overcast', 'Overcast', 'Rainy'], \
+        'temp': ['Hot', 'Hot', 'Hot', 'Mild', 'Cold', 'Cold', 'Cold', 'Mild', 'Cold', 'Mild', 'Mild', 'Mild', 'Hot', 'Mild'], \
+        'humidity':['High', 'High', 'High', 'High', 'Normal', 'Normal', 'Normal', 'High', 'Normal', 'Normal', 'Normal', 'High', 'Normal', 'High'], \
+        'windy':['False', 'True', 'False', 'False', 'False', 'True', 'True', 'False', 'False', 'False', 'True', 'True', 'False', 'True'], \
+        'Decision':['No','No','Yes','Yes','Yes','No','Yes','No','Yes','Yes','Yes','Yes','Yes','No']}
+
+traindfx2_c45 = pd.DataFrame(data = trainx2_c45)
+
+
+# print("Q4 PART 2 C4.5")
+# config = {'algorithm': 'C4.5'}
+# model = chef.fit(traindfx2_c45, config)
+# print("\n\n")
+
+
+
+#Task 5
+#Manually typing up data and encoding variables
+#home represents if a game was home or away. 1 indicates home
+#top indicates if oppenent in AP top 25 at Preseason. 1 indicates In
+#media corresponds to media coverage. 1-NBC, 2-ESPN, 3-Fox, 4-ABC
+#win - 1, lose - 0
+train3 = {'home': [1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0],\
+        'top': [0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1], \
+        'media':[1, 4, 1, 1, 4, 1, 1, 4, 4, 1, 1, 3, 4, 1, 1, 1, 2, 4, 1, 1, 5, 1, 1, 4], \
+        'result':[1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, ]}
+
+test3 = {'home': [1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0], \
+        'top': [0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1], \
+        'media':[1, 1, 2, 3, 1, 4, 1, 1, 1, 4, 1, 4]}
+
+trainDf3 = pd.DataFrame(data = train3)
+testDf3 = pd.DataFrame(data = test3)
+
+dt5 = tree.DecisionTreeClassifier(criterion="entropy")
+clf5 = dt5.fit(trainDf3.iloc[:, :3], trainDf3['result'])
+tree.plot_tree(dt5.fit(trainDf3.iloc[:, :3], trainDf3['result']))
+dot_data = tree.export_graphviz(dt5, out_file=None, feature_names=list(trainDf3.columns.values)[:3],
+                                filled=True, rounded=True, special_characters=True)
+graph = graphviz.Source(dot_data)
+graph.render("Entropy_DecisionTree_Q5")
+
+prediction = clf5.predict(testDf3)
+print("Prediction for Entropy Q5:", prediction)
+
+y_test = np.array([1, 0, 1, 1, 1, 1, 1 ,1, 1, 0, 1, 0])
+y_pred = prediction
+
+precision = precision_score(y_test,y_pred)
+F1_score = f1_score(y_test,y_pred)
+recall_score = recall_score(y_test,y_pred)
+accuracy_score = accuracy_score(y_test,y_pred)
+
+train4 = {'home': [1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0],\
+        'top': ['Out', 'Out', 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1], \
+        'media':[1, 4, 1, 1, 4, 1, 1, 4, 4, 1, 1, 3, 4, 1, 1, 1, 2, 4, 1, 1, 5, 1, 1, 4], \
+        'Decision':[1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, ]}
+trainDf4 = pd.DataFrame(data = train4)
+
+
+train_c45_2 = {'home': ['Home', 'Away', 'Home', 'Home', 'Away', 'Home', 'Home', 'Away', 'Away', 'Home', 'Away', 'Away', 'Away', 'Home', 'Home', 'Home', 'Home', 'Away', 'Home', 'Home', 'Home', 'Home', 'Home', 'Away'],\
+        'top': ['Out', 'Out', 'In', 'Out', 'In', 'Out', 'In', 'Out', 'Out', 'Out', 'Out', 'In', 'Out', 'Out', 'Out', 'Out', 'Out', 'Out', 'In', 'Out', 'Out', 'Out', 'In', 'In'], \
+        'media':[1, 4, 1, 1, 4, 1, 1, 4, 4, 1, 1, 3, 4, 1, 1, 1, 2, 4, 1, 1, 5, 1, 1, 4], \
+        'Decision':['Win', 'Win', 'Win', 'Win', 'Lose', 'Win', 'Win', 'Win', 'Win', 'Win', 'Win', 'Lose', 'Lose', 'Win', 'Lose', 'Lose', 'Win', 'Lose', 'Lose', 'Win', 'Lose', 'Win', 'Lose', 'Lose', ]}
+dftrain_c45_2 = pd.DataFrame(data = train_c45_2)
+
+
+print("\n\n")
+config = {'algorithm': 'C4.5'}
+model = chef.fit(dftrain_c45_2, config)
+print("\n\n")
+
+
+
+print("Precision: ", precision)
+print("F1 Score: ", F1_score)
+print("Recall Score: ", recall_score)
+print("Accuracy Score: ", accuracy_score)
