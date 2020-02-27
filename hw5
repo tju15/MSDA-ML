@@ -1,0 +1,141 @@
+import pandas as pd
+# import numpy as np
+from sklearn.model_selection import train_test_split
+# from sklearn.metrics import precision_score,f1_score, recall_score, accuracy_score
+# from sklearn import tree
+from sklearn.neighbors import KNeighborsClassifier
+
+
+data = pd.read_csv('~/MSDA/CAP5610/homework/iris.data', \
+        names=['Sepal Length', 'Sepal Width', 'Petal Length', 'Petal Width', 'Class'])
+# print(data.head())
+#
+# X = data.drop(columns = 'Class')
+# Y = data['Class'].values
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import cross_val_score
+from sklearn.tree import DecisionTreeClassifier
+clf = DecisionTreeClassifier(criterion='gini')
+clf2 = DecisionTreeClassifier(criterion='entropy')
+
+iris = load_iris()
+crossValDT = cross_val_score(clf, iris.data, iris.target, cv=5).mean()
+crossValDT2 = cross_val_score(clf2, iris.data, iris.target, cv=5).mean()
+
+print("Gini accuracy", crossValDT)
+print("Entropy accuracy", crossValDT2)
+
+
+
+
+
+
+
+
+# train_df, test_df = train_test_split(data, test_size = 0.2)
+# print(train_df.head())
+# print(test_df.head())
+
+#do multiple times
+neigh1 = KNeighborsClassifier(n_neighbors=1)
+neigh2 = KNeighborsClassifier(n_neighbors=2)
+neigh3 = KNeighborsClassifier(n_neighbors=3)
+neigh4 = KNeighborsClassifier(n_neighbors=4)
+neigh5 = KNeighborsClassifier(n_neighbors=5)
+neigh6 = KNeighborsClassifier(n_neighbors=6)
+neigh7 = KNeighborsClassifier(n_neighbors=7)
+neigh8 = KNeighborsClassifier(n_neighbors=8)
+neigh9 = KNeighborsClassifier(n_neighbors=9)
+neigh10 = KNeighborsClassifier(n_neighbors=10)
+neigh11 = KNeighborsClassifier(n_neighbors=11)
+neigh12 = KNeighborsClassifier(n_neighbors=12)
+neigh13 = KNeighborsClassifier(n_neighbors=13)
+neigh14 = KNeighborsClassifier(n_neighbors=14)
+neigh15 = KNeighborsClassifier(n_neighbors=15)
+
+
+crossValKN1 = cross_val_score(neigh1, iris.data, iris.target, cv=5, scoring="accuracy")
+crossValKN2 = cross_val_score(neigh2, iris.data, iris.target, cv=5, scoring="accuracy")
+crossValKN3 = cross_val_score(neigh3, iris.data, iris.target, cv=5, scoring="accuracy")
+crossValKN4 = cross_val_score(neigh4, iris.data, iris.target, cv=5, scoring="accuracy")
+crossValKN5 = cross_val_score(neigh5, iris.data, iris.target, cv=5, scoring="accuracy")
+crossValKN6 = cross_val_score(neigh6, iris.data, iris.target, cv=5, scoring="accuracy")
+crossValKN7 = cross_val_score(neigh7, iris.data, iris.target, cv=5, scoring="accuracy")
+crossValKN8 = cross_val_score(neigh8, iris.data, iris.target, cv=5, scoring="accuracy")
+crossValKN9 = cross_val_score(neigh9, iris.data, iris.target, cv=5, scoring="accuracy")
+crossValKN10 = cross_val_score(neigh10, iris.data, iris.target, cv=5, scoring="accuracy")
+crossValKN11 = cross_val_score(neigh11, iris.data, iris.target, cv=5, scoring="accuracy")
+crossValKN12 = cross_val_score(neigh12, iris.data, iris.target, cv=5, scoring="accuracy")
+crossValKN13 = cross_val_score(neigh13, iris.data, iris.target, cv=5, scoring="accuracy")
+crossValKN14 = cross_val_score(neigh14, iris.data, iris.target, cv=5, scoring="accuracy")
+crossValKN15 = cross_val_score(neigh15, iris.data, iris.target, cv=5, scoring="accuracy")
+
+
+
+print("KNN = 1 accuracy: ", crossValKN1.mean())
+print("KNN = 2 accuracy: ", crossValKN2.mean())
+print("KNN = 3 accuracy: ", crossValKN3.mean())
+print("KNN = 4 accuracy: ", crossValKN4.mean())
+print("KNN = 5 accuracy: ", crossValKN5.mean())
+print("KNN = 6 accuracy: ", crossValKN6.mean())
+print("KNN = 7 accuracy: ", crossValKN7.mean())
+print("KNN = 8 accuracy: ", crossValKN8.mean())
+print("KNN = 9 accuracy: ", crossValKN9.mean())
+print("KNN = 10 accuracy: ", crossValKN10.mean())
+print("KNN = 11 accuracy: ", crossValKN11.mean())
+print("KNN = 12 accuracy: ", crossValKN12.mean())
+print("KNN = 13 accuracy: ", crossValKN13.mean())
+print("KNN = 14 accuracy: ", crossValKN14.mean())
+print("KNN = 15 accuracy: ", crossValKN15.mean())
+
+c1 = crossValKN1.mean()
+c2 = crossValKN2.mean()
+c3 = crossValKN3.mean()
+c4 = crossValKN4.mean()
+c5 = crossValKN5.mean()
+c6 = crossValKN6.mean()
+c7 = crossValKN7.mean()
+c8 = crossValKN8.mean()
+c9 = crossValKN9.mean()
+c10 = crossValKN10.mean()
+c11 = crossValKN11.mean()
+c12 = crossValKN12.mean()
+c13 = crossValKN13.mean()
+c14 = crossValKN14.mean()
+c15 = crossValKN15.mean()
+
+
+import numpy as np
+import matplotlib.mlab as mlab
+import matplotlib.pyplot as plt
+
+x = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15]
+num_bins = 15
+n, bins, patches = plt.hist(x, num_bins, facecolor='blue', alpha=0.5)
+plt.xlabel('Accuracy')
+plt.ylabel('Count')
+plt.show()
+
+
+import matplotlib.pyplot as plt; plt.rcdefaults()
+
+K = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
+y_pos = np.arange(len(K))
+performance = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15]
+
+plt.bar(y_pos, performance, align='center', alpha=0.5)
+plt.xticks(y_pos, K)
+plt.xlabel('K Value')
+plt.ylabel('Accuracy')
+plt.show()
+
+K = ["Gini", "Entropy", "K = 10"]
+y_pos = np.arange(len(K))
+performance = [crossValDT, crossValDT2, c10]
+
+plt.bar(y_pos, performance, align='center', alpha=0.5)
+plt.xticks(y_pos, K)
+plt.xlabel('Methods')
+plt.ylabel('Accuracy')
+plt.show()
