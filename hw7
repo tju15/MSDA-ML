@@ -106,18 +106,21 @@ fig, ax = plt.subplots()
 # p1 = ax.bar(r1, means['MSD'], width = barWidth, label = "MSD")
 # p2 = ax.bar(r2, means['COSINE'], width = barWidth, label = "Cosine")
 # p3 = ax.bar(r3, means["PEARSON"], width = barWidth, label = "Pearson")
+# ax.set_ylim([0.95, 1.1])
+
 
 # MAE
 p1 = ax.bar(r1, means2['MSD'], width = barWidth, label = "MSD")
 p2 = ax.bar(r2, means2['COSINE'], width = barWidth, label = "Cosine")
 p3 = ax.bar(r3, means2["PEARSON"], width = barWidth, label = "Pearson")
+ax.set_ylim([0.75, 0.85])
+
 
 ax.set_ylabel("MAE Score")
 ax.set_xlabel("Metric")
 ax.set_title("Comparing Metrics for User and Item Based Collaborative Filtering")
 ax.set_xticks(r2)
 ax.set_xticklabels(["User-Based", "Item-Based"])
-ax.set_ylim([0.75, 0.85])
 plt.legend()
 ax.autoscale_view()
 plt.show()
